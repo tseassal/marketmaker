@@ -1,4 +1,4 @@
-package com.example.marketmaker.quoteServices;
+package com.example.marketmaker.services;
 
 /**
  * Provides access to to libraries for pricing of quote requests.

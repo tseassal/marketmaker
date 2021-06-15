@@ -1,4 +1,4 @@
-package com.example.marketmaker;
+package com.example.marketmaker.services;
 
 /**
  * Source for reference prices.
@@ -12,4 +12,6 @@ public interface ReferencePriceSource {
     void subscribe(ReferencePriceSourceListener listener);
 
     double get(int securityId);
+
+    void updatePrice(int securityId, double price);
 }

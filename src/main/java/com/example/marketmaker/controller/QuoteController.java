@@ -1,6 +1,11 @@
 package com.example.marketmaker.controller;
 
-import com.example.marketmaker.quoteServices.QuoteCalculationEngine;
+import com.example.marketmaker.model.Request;
+import com.example.marketmaker.services.QuoteCalculationEngine;
+import com.example.marketmaker.services.ReferencePriceSource;
+import com.example.marketmaker.services.RequestServices;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,18 +15,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class QuoteController {
+    private static final Logger logger = LoggerFactory.getLogger(QuoteController.class);
 
     private final QuoteCalculationEngine quoteCalculationEngine;
+    private final ReferencePriceSource referencePriceSource;
 
     @Autowired
-    public QuoteController(QuoteCalculationEngine quoteCalculationEngine) {
+    public QuoteController(QuoteCalculationEngine quoteCalculationEngine, ReferencePriceSource referencePriceSource) {
         this.quoteCalculationEngine=quoteCalculationEngine;
+        this.referencePriceSource=referencePriceSource;
     }
 
     @RequestMapping(value = "quote", method = RequestMethod.GET)
     public ResponseEntity<Double> getQuote(String request){
-        
-        double res = quoteCalculationEngine.calculateQuotePrice(1,0.2,true,1);
+        logger.info("Receive request : {}", request);
+        Request input = RequestServices.inputToRequest(request);
+        double res = quoteCalculationEngine.calculateQuotePrice(
+                input.getSecurityId(),
+                referencePriceSource.get(input.getSecurityId()),
+                input.isBuy(),
+                input.getQuantity());
         return new ResponseEntity<>(res, HttpStatus.OK);
 
     }
