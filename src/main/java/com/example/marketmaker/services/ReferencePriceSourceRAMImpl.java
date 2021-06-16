@@ -17,6 +17,7 @@ public class ReferencePriceSourceRAMImpl implements ReferencePriceSource {
         priceMap = new ConcurrentHashMap<>();
         priceMap.put(1, 420d);
         priceMap.put(2, 3.2d);
+        priceMap.put(123, 3.2d);
     }
 
     @Override
