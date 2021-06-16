@@ -60,10 +60,10 @@ public class MarketmakerApplication {
 
 				if ((key.readyOps() & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT) {
 					logger.info("Accepting connection");
-					ServerSocketChannel channel = (ServerSocketChannel) key.channel();
+					ServerSocketChannel channel = (ServerSocketChannel) key.channel(); //useless here but in PROD environment we could have many channels
 					SocketChannel socketChannel = channel.accept();
 					socketChannel.configureBlocking(false);
-					socketChannel.register(selector, SelectionKey.OP_READ);
+					socketChannel.register(selector, SelectionKey.OP_READ); //now we are interested in read operations
 					keys.remove(key);
 				} else if ((key.readyOps() & SelectionKey.OP_READ) == SelectionKey.OP_READ){
 					SocketChannel socketChannel = (SocketChannel) key.channel();
