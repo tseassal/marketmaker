@@ -52,6 +52,7 @@ public class MarketmakerApplication {
 		Selector selector = Selector.open();
 		serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
+		logger.info("TCP Server started on port: 1111");
 		while(true){
 			selector.select();
 

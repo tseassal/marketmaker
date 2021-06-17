@@ -28,6 +28,7 @@ public class QuoteController {
 
     @RequestMapping(value = "quote", method = RequestMethod.GET)
     public ResponseEntity<Double> getQuoteEntry(String request){
+        //for debug testing purpose
         logger.info("Receive request : {}", request);
         return new ResponseEntity<>(getQuote(request), HttpStatus.OK);
 
@@ -35,10 +36,12 @@ public class QuoteController {
 
     public double getQuote(String request){
         Request input = RequestServices.inputToRequest(request);
-        return quoteCalculationEngine.calculateQuotePrice(
+        if(input.getQuantity()!=0) return quoteCalculationEngine.calculateQuotePrice(
                 input.getSecurityId(),
                 referencePriceSource.get(input.getSecurityId()),
                 input.isBuy(),
                 input.getQuantity());
+        return 0;
+
     }
 }
